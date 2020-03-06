@@ -22,7 +22,7 @@
         </nav>
 
         <form class="form-inline" action="/" method="get">
-            <div class="form-group mb-2 mr-2">
+            <div class="form-group mb-2 mr-2 mt-2">
                 <label for="news_sources" class="col-form-label mr-2">Select a news source:</label>
                 <select class="form-control" name="source" id="news_sources">
                     <option value="{{@$source_id}} : {{@$source_name}}">{{$source_name}}</option>
