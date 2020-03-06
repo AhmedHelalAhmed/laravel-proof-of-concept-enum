@@ -33,7 +33,7 @@
                 </select>
             </div>
 
-            <button type="submit" class="btn btn-primary mb-2">Ok</button>
+            <button type="submit" class="btn btn-primary mb-2 mt-2">Ok</button>
         </form>
     </div>
     <div class="container-fluid">
