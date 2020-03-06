@@ -3,6 +3,7 @@
 
 namespace App\Repositories;
 
+use App\Enums\SystemSettingsEnum;
 use GuzzleHttp\Client as GuzzleHttpClient;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7;
@@ -20,21 +21,18 @@ class NewsRepository
         $this->client = $client;
     }
 
-    /**
-     * from https://newsapi.org/register/success
-     */
-    const API_KEY='6d2689db733b460d8aea70dc456ddf07';
+
 
     /**
      * @param $source
      * @return mixed
-     * to get news from newsapi
+     * to get news from news api
      */
     public function getNews($source)
     {
         try {
             //with the code below, we can get news from multiple sources
-            $apiRequest    = $this->client->request('GET', 'https://newsapi.org/v1/articles?source='.$source.'&sortBy=top&apiKey='.self::API_KEY );
+            $apiRequest    = $this->client->request('GET', SystemSettingsEnum::NEWS_API_URL.'/articles?source='.$source.'&sortBy=top&apiKey='.SystemSettingsEnum::NEWS_API_KEY);
             $content       = json_decode($apiRequest->getBody()->getContents(), true);
             return $content['articles'];
         } catch (RequestException $e) {
@@ -55,7 +53,7 @@ class NewsRepository
 
         try {
 
-            $apiRequest       = $this->client->request('GET', 'https://newsapi.org/v1/sources?language=en' );
+            $apiRequest       = $this->client->request('GET', SystemSettingsEnum::NEWS_API_URL.'/sources?language=en' );
             $content          = json_decode($apiRequest->getBody()->getContents(), true);
             return $content['sources'];
         } catch (RequestException $e) {

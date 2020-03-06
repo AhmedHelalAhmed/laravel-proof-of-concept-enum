@@ -20,7 +20,6 @@
         <nav class="navbar  navbar-light bg-faded" style="background-color: #e3f2fd;">
             <a class="navbar-brand" href="#">News Around the World</a>
         </nav>
-
         <form class="form-inline" action="/" method="get">
             <div class="form-group mb-2 mr-2 mt-2">
                 <label for="news_sources" class="col-form-label mr-2">Select a news source:</label>
@@ -38,11 +37,12 @@
     </div>
     <div class="container-fluid">
         <div class="bg-secondary m-1 text-center text-white">
-            <h1>News Source : {{$source_name}}</h1>
+            <h1>Top {{App\Enums\SystemSettingsEnum::ARTICLES_NUMBER}} news - News Source : {{$source_name}}</h1>
         </div>
 
         <section class="news">
             @foreach($news as $selected_news)
+
                 <div class="card mt-2">
                     <div class="card-header">
                         {{$selected_news['title']}}
@@ -82,7 +82,9 @@
                     </div>
                 </div>
 
-
+                @if($loop->iteration==App\Enums\SystemSettingsEnum::ARTICLES_NUMBER)
+                    @break
+                @endif
             @endforeach
         </section>
     </div>
