@@ -1,100 +1,94 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+    <title>News Application with Laravel</title>
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}" defer></script>
+    <!-- Styles -->
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+</head>
+<body>
 
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Nunito', sans-serif;
-                font-weight: 200;
-                height: 100vh;
-                margin: 0;
-            }
+<div class="container-fluid">
+    <div class="container-fluid">
+        <nav class="navbar  navbar-light bg-faded" style="background-color: #e3f2fd;">
+            <a class="navbar-brand" href="#">News Around the World</a>
+        </nav>
 
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
-                        @endif
-                    @endauth
-                </div>
-            @endif
-
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
-
-                <div class="links">
-                    <a href="https://laravel.com/docs">Docs</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://blog.laravel.com">Blog</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://vapor.laravel.com">Vapor</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
+        <form class="form-inline" action="/" method="get">
+            <div class="form-group mb-2 mr-2">
+                <label for="news_sources" class="col-form-label mr-2">Select a news source:</label>
+                <select class="form-control" name="source" id="news_sources">
+                    <option value="{{@$source_id}} : {{@$source_name}}">{{$source_name}}</option>
+                    @foreach ($news_sources as $news_source)
+                        <option
+                            value="{{$news_source['id']}} : {{$news_source['name'] }}">{{$news_source['name']}}</option>
+                    @endforeach
+                </select>
             </div>
+
+            <button type="submit" class="btn btn-primary mb-2">Ok</button>
+        </form>
+    </div>
+    <div class="container-fluid">
+        <div class="bg-secondary m-1 text-center text-white">
+            <h1>News Source : {{$source_name}}</h1>
         </div>
-    </body>
+
+        <section class="news">
+            @foreach($news as $selected_news)
+                <div class="card mt-2">
+                    <div class="card-header">
+                        {{$selected_news['title']}}
+                    </div>
+                    <div class="card-body">
+
+                        <article class="card">
+
+                            <img src="{{$selected_news['urlToImage']}}" class="card-img-top figure-img"
+                                 alt="photo of the article">
+                            <div class="card-body">
+
+                                <p class="card-text" style="font-size: 14px">
+                                    {{$selected_news['description']}}
+                                </p>
+                                @isset($selected_news['author'])
+                                    <div>
+                                        <b>
+                                            Author: {{ strip_tags($selected_news['author'])  }}
+                                        </b>
+                                    </div>
+                                @endisset
+                                <a target="_blank" href="{{$selected_news['url']}}" class="btn btn-primary">Read more...</a>
+                            </div>
+
+                        </article>
+                    </div>
+                    <div class="card-footer text-muted">
+
+                        @if($selected_news['publishedAt'] != null)
+                            <div style="padding-top: 5px;">Date
+                                Published: {{ Carbon\Carbon::parse($selected_news['publishedAt'])->format('l jS \\of F Y ') }}</div>
+                        @else
+                            <div style="padding-top: 5px;">Date Published: Unknown</div>
+
+                        @endif
+                    </div>
+                </div>
+
+
+            @endforeach
+        </section>
+    </div>
+
+</div>
+
+
+</body>
 </html>
